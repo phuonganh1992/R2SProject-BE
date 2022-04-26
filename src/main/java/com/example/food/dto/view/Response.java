@@ -13,7 +13,8 @@ public enum Response {
     DATA_NOT_FOUND("0009", "Data not found"),
     ACCOUNT_IS_LOCK("1999", "Tài khoản của bạn tạm thời bị khóa! Vui lòng kiểm tra hòm thư và liên hệ với cơ sở CSKH!"),
     DATA_CANT_DELETE("0509", "Data can't delete"),
-    SYSTEM_ERROR("9999", "System errors");
+    SYSTEM_ERROR("9999", "System errors"),
+    BAD_REQUEST("0010","bad request");
 
     private String responseCode;
     private String responseMessage;

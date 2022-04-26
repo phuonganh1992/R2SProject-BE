@@ -1,14 +1,18 @@
 package com.example.food.dto.command;
 
 import com.example.food.constant.Constant;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-
-public class MerchantRegisterForm {
+@Data
+@Builder
+public class MerchantRegisterCommand implements Serializable {
     @NotBlank
     @Size(min = 6, max = 50)
     @Pattern(regexp = "^[a-z]{1}[a-z0-9._-]{5,15}$")
@@ -35,7 +39,7 @@ public class MerchantRegisterForm {
     private String email;
 
     @Pattern(regexp = "^[+84]+[0-9]{9}$")
-    private String phoneNumber;
+    private String phone;
 
     @NotBlank
     private String registrationCertificate;

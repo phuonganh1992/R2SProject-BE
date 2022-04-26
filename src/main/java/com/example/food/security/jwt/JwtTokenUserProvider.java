@@ -28,6 +28,7 @@ public class JwtTokenUserProvider {
                 .setIssuedAt(now)
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+
                 .compact();
     }
 

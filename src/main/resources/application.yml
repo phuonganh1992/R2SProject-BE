@@ -26,10 +26,10 @@ spring:
     allow-circular-references: true
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /swagger/api-docs
     enabled: true
   swagger-ui:
-    path: /swagger-ui-custom.html
+    path: /swagger/swagger-ui-custom.html
     operations-sorter: desc
 
 
