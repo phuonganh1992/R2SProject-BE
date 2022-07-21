@@ -2,6 +2,7 @@ package com.example.food.service.merchant;
 
 import com.example.food.advice.CommonException;
 import com.example.food.constant.Constant;
+import com.example.food.domain.Category;
 import com.example.food.domain.Food;
 import com.example.food.domain.Merchant;
 import com.example.food.domain.Role;
@@ -91,6 +92,17 @@ public class MerchantService implements IMerchantService {
         }
         return pageMerchants.getContent().stream().map(this::convertMerchantView)
                 .collect(Collectors.toList());
+    }
+
+    public List<MerchantView> list() {
+        Iterable<Merchant> merchantIterable = merchantRepository.findAll();
+        List<Merchant> merchants = IterableUtils.toList(merchantIterable);
+
+        if(merchants.isEmpty()){
+            throw new CommonException(Response.OBJECT_NOT_FOUND, Response.OBJECT_NOT_FOUND.getResponseMessage());
+        }
+        List<MerchantView> merchantViews = merchants.stream().map(MerchantView::from).collect(Collectors.toList());
+        return merchantViews;
     }
 
     public MerchantView findById(Long id) {

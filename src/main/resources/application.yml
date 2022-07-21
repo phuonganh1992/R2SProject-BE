@@ -22,8 +22,27 @@ spring:
         format_sql: true
         hb2dll:
           auto: update
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
   main:
     allow-circular-references: true
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAXCJ5SNGBQJR2NKBE
+      secret-key: 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
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: phuonganh-storage
 springdoc:
   api-docs:
     path: /swagger/api-docs

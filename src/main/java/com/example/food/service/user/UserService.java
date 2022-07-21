@@ -1,6 +1,5 @@
 package com.example.food.service.user;
 
-import com.example.food.advice.BadRequestException;
 import com.example.food.advice.CommonException;
 import com.example.food.constant.Constant;
 import com.example.food.domain.Role;
@@ -25,10 +24,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -90,7 +92,7 @@ public class UserService implements IUserService {
     }
 
     public Page<UserView> findAll(DefaultQueryCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage() - 1, criteria.getSize(), criteria.getSortable());
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSortable());
         Page<User> pageUsers = userRepository.findAll(pageable);
         if (pageUsers.getTotalElements() == 0) {
             throw new CommonException(Response.OBJECT_NOT_FOUND, Response.OBJECT_NOT_FOUND.getResponseMessage());
@@ -105,6 +107,13 @@ public class UserService implements IUserService {
 
     public UserView findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findFirstByUsername(username);
+        if (!optionalUser.isPresent()) {
+            throw new CommonException(Response.OBJECT_NOT_FOUND, Response.OBJECT_NOT_FOUND.getResponseMessage());
+        } else return UserView.from(optionalUser.get());
+    }
+
+    public UserView findById(UUID id) {
+        Optional<User> optionalUser = userRepository.findById(id);
         if (!optionalUser.isPresent()) {
             throw new CommonException(Response.OBJECT_NOT_FOUND, Response.OBJECT_NOT_FOUND.getResponseMessage());
         } else return UserView.from(optionalUser.get());
@@ -183,4 +192,23 @@ public class UserService implements IUserService {
         }
         return UserView.from(userRepository.save(user));
     }
+
+    public UserView uploadAvatar(UUID id, MultipartFile file[]) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new CommonException(Response.OBJECT_NOT_FOUND, Response.OBJECT_NOT_FOUND.getResponseMessage());
+        }
+        User user = optionalUser.get();
+        byte[] fileContent=null;
+        try {
+            fileContent=file[0].getBytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String outputFile = Base64.getEncoder().encodeToString(fileContent);
+        user.setAvatar("data:image/png;base64,"+outputFile);
+        User userSave = userRepository.save(user);
+        return UserView.from(userSave);
+    }
 }
+

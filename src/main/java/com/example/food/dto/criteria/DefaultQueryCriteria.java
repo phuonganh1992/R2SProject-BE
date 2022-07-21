@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +19,9 @@ public class DefaultQueryCriteria implements Serializable {
 
     @Schema(description = "Size mặc định là 25")
     private int size = 25;
-    @Schema(description = "Page mặc định là 1")
-    private int page = 1;
+    @Schema(description = "Page mặc định là 0")
+    @Min(0)
+    private int page = 0;
     @Schema(description = "Nếu k truyền sort thì mặc định là unsorted, nếu truyền vào 'sort=username:desc' hoặc 'sort=username:asc'")
     private String sort;
 

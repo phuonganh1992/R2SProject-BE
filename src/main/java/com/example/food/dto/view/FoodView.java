@@ -20,7 +20,8 @@ public class FoodView implements Serializable {
     private Float price;
     private Constant.FoodStatus status;
     private List<String> images;
-    private String merchant;
+    private String merchantName;
+    private Long merchantId;
     private Category category;
     private Instant createdAt;
     private String createdBy;
@@ -36,7 +37,8 @@ public class FoodView implements Serializable {
                 .price(domain.getPrice())
                 .status(domain.getStatus())
                 .images(domain.getImages())
-                .merchant(domain.getMerchant().getName())
+                .merchantName(domain.getMerchant().getName())
+                .merchantId(domain.getMerchant().getId())
                 .category(domain.getCategory())
                 .createdAt(domain.getCreatedAt())
                 .createdBy(domain.getCreatedBy())
